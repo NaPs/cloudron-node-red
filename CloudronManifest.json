@@ -1,0 +1,39 @@
+{
+  "id": "org.nodered.cloudron",
+  "title": "Node-RED",
+  "author": "Node-RED contributors",
+  "description": "file://DESCRIPTION.md",
+  "tagline": "Low-code programming for event-driven applications",
+  "version": "1.0.0",
+  "upstreamVersion": "5.0.1",
+  "website": "https://nodered.org",
+  "contactEmail": "antoine@inaps.org",
+  "forumUrl": "https://github.com/NaPs/cloudron-node-red/issues",
+  "documentationUrl": "https://github.com/NaPs/cloudron-node-red",
+  "healthCheckPath": "/",
+  "httpPort": 1880,
+  "dockerImage": "ghcr.io/naps/cloudron-node-red:1.0.0",
+  "addons": {
+    "localstorage": {},
+    "oidc": {
+      "loginRedirectUri": "/auth/strategy/callback"
+    }
+  },
+  "manifestVersion": 2,
+  "memoryLimit": 1073741824,
+  "minBoxVersion": "9.1.0",
+  "icon": "file://icon.png",
+  "iconUrl": "https://raw.githubusercontent.com/NaPs/cloudron-node-red/main/icon.png",
+  "packagerName": "NaPs",
+  "packagerUrl": "https://github.com/NaPs/cloudron-node-red",
+  "tags": [
+    "automation",
+    "iot",
+    "development",
+    "low-code"
+  ],
+  "mediaLinks": [
+    "https://raw.githubusercontent.com/NaPs/cloudron-node-red/main/icon.png"
+  ],
+  "postInstallMessage": "file://POSTINSTALL.md"
+}

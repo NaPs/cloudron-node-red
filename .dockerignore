@@ -1,0 +1,6 @@
+.git
+.github
+*.md
+CloudronManifest.json
+CloudronVersions.json
+icon.png

@@ -1,0 +1,105 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        if: github.event_name != 'pull_request'
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/metadata-action@v5
+        id: meta
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate CloudronVersions.json and create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          NODERED_VERSION="$(sed -n 's/^ARG NODERED_VERSION=//p' Dockerfile)"
+          IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}:${VERSION}"
+          DATE="$(LC_ALL=C date -u '+%a, %d %b %Y %H:%M:%S GMT')"
+
+          # changelog: commit titles since the previous version tag (full history on first release)
+          PREV_TAG="$(git describe --tags --abbrev=0 "${GITHUB_REF_NAME}^" 2>/dev/null || true)"
+          if [ -n "$PREV_TAG" ]; then
+            CHANGES="$(git log --pretty='* %s' "${PREV_TAG}..${GITHUB_REF_NAME}")"
+          else
+            CHANGES="$(git log --pretty='* %s' "${GITHUB_REF_NAME}")"
+          fi
+          [ -n "$CHANGES" ] || CHANGES="Release ${VERSION} (Node-RED ${NODERED_VERSION})"
+
+          jq -n \
+            --slurpfile manifest CloudronManifest.json \
+            --rawfile description DESCRIPTION.md \
+            --rawfile postinstall POSTINSTALL.md \
+            --arg version "$VERSION" \
+            --arg nodered "$NODERED_VERSION" \
+            --arg image "$IMAGE" \
+            --arg date "$DATE" \
+            --arg changes "$CHANGES" \
+            '{
+              stable: true,
+              versions: {
+                ($version): {
+                  manifest: ($manifest[0] + {
+                    version: $version,
+                    upstreamVersion: $nodered,
+                    description: ($description | rtrimstr("\n")),
+                    postInstallMessage: ($postinstall | rtrimstr("\n")),
+                    changelog: ($changes | rtrimstr("\n")),
+                    icon: "icon.png",
+                    dockerImage: $image
+                  }),
+                  creationDate: $date,
+                  ts: $date,
+                  publishState: "published"
+                }
+              }
+            }' > CloudronVersions.json
+          jq . CloudronVersions.json
+
+          gh release create "$GITHUB_REF_NAME" CloudronVersions.json \
+            --title "Node-RED for Cloudron ${VERSION}" \
+            --notes "${CHANGES}"

@@ -1,0 +1,6 @@
+{
+    "name": "node-red-project",
+    "description": "Node-RED user modules (palette installs land here)",
+    "version": "0.0.1",
+    "private": true
+}
