@@ -54,11 +54,11 @@ A GitHub Actions workflow builds and pushes the image to GHCR automatically:
 ## Releasing a new version
 
 1. Bump `NODERED_VERSION` in the `Dockerfile` if Node-RED itself changed.
-2. Tag `vX.Y.Z` and push. CI then builds and pushes `ghcr.io/naps/cloudron-node-red:X.Y.Z`, generates `CloudronVersions.json` from the manifest, and creates the GitHub release with the catalog attached.
+2. Tag `vX.Y.Z` and push. CI then builds and pushes `ghcr.io/naps/cloudron-node-red:X.Y.Z`, downloads the previous release's `CloudronVersions.json`, runs `cloudron versions add` to append this version, and creates the GitHub release with the updated catalog attached.
 
 Versions are injected by CI at release time: the package `version` comes from the git tag and `upstreamVersion` from the Dockerfile's `NODERED_VERSION` — the values in the committed `CloudronManifest.json` only matter for manual `cloudron install --image` testing. The commit titles since the previous version tag become the release notes and the catalog changelog.
 
-The catalog contains only the released version (single entry). Older catalogs remain available on their respective releases (`releases/download/vX.Y.Z/CloudronVersions.json`).
+The catalog is **cumulative**: each release carries the full version history, so installed instances always find their current version and are offered the update. A dropped entry would break update detection for instances still on that version.
 
 ## License
 
