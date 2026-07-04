@@ -19,6 +19,58 @@
       "loginRedirectUri": "/auth/strategy/callback"
     }
   },
+  "tcpPorts": {
+    "TCP_PORT_1": {
+      "title": "TCP port 1",
+      "description": "Generic raw TCP port for flows. Disabled by default; the admin picks the port number. A flow node must listen on it via ${TCP_PORT_1}. Bypasses the reverse proxy (no automatic TLS).",
+      "enabledByDefault": false
+    },
+    "TCP_PORT_2": {
+      "title": "TCP port 2",
+      "description": "Generic raw TCP port for flows. Disabled by default; the admin picks the port number. A flow node must listen on it via ${TCP_PORT_2}. Bypasses the reverse proxy (no automatic TLS).",
+      "enabledByDefault": false
+    },
+    "TCP_PORT_3": {
+      "title": "TCP port 3",
+      "description": "Generic raw TCP port for flows. Disabled by default; the admin picks the port number. A flow node must listen on it via ${TCP_PORT_3}. Bypasses the reverse proxy (no automatic TLS).",
+      "enabledByDefault": false
+    },
+    "TCP_PORT_4": {
+      "title": "TCP port 4",
+      "description": "Generic raw TCP port for flows. Disabled by default; the admin picks the port number. A flow node must listen on it via ${TCP_PORT_4}. Bypasses the reverse proxy (no automatic TLS).",
+      "enabledByDefault": false
+    },
+    "TCP_PORT_5": {
+      "title": "TCP port 5",
+      "description": "Generic raw TCP port for flows. Disabled by default; the admin picks the port number. A flow node must listen on it via ${TCP_PORT_5}. Bypasses the reverse proxy (no automatic TLS).",
+      "enabledByDefault": false
+    },
+    "TCP_PORT_6": {
+      "title": "TCP port 6",
+      "description": "Generic raw TCP port for flows. Disabled by default; the admin picks the port number. A flow node must listen on it via ${TCP_PORT_6}. Bypasses the reverse proxy (no automatic TLS).",
+      "enabledByDefault": false
+    },
+    "TCP_PORT_7": {
+      "title": "TCP port 7",
+      "description": "Generic raw TCP port for flows. Disabled by default; the admin picks the port number. A flow node must listen on it via ${TCP_PORT_7}. Bypasses the reverse proxy (no automatic TLS).",
+      "enabledByDefault": false
+    },
+    "TCP_PORT_8": {
+      "title": "TCP port 8",
+      "description": "Generic raw TCP port for flows. Disabled by default; the admin picks the port number. A flow node must listen on it via ${TCP_PORT_8}. Bypasses the reverse proxy (no automatic TLS).",
+      "enabledByDefault": false
+    },
+    "TCP_PORT_9": {
+      "title": "TCP port 9",
+      "description": "Generic raw TCP port for flows. Disabled by default; the admin picks the port number. A flow node must listen on it via ${TCP_PORT_9}. Bypasses the reverse proxy (no automatic TLS).",
+      "enabledByDefault": false
+    },
+    "TCP_PORT_10": {
+      "title": "TCP port 10",
+      "description": "Generic raw TCP port for flows. Disabled by default; the admin picks the port number. A flow node must listen on it via ${TCP_PORT_10}. Bypasses the reverse proxy (no automatic TLS).",
+      "enabledByDefault": false
+    }
+  },
   "manifestVersion": 2,
   "memoryLimit": 1073741824,
   "minBoxVersion": "9.1.0",

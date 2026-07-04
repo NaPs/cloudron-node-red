@@ -9,6 +9,7 @@ Community [Cloudron](https://www.cloudron.io) package for [Node-RED](https://nod
 * **Public HTTP endpoints**: `http in` nodes, dashboards, webhooks... are reachable without authentication
 * **Palette Manager** works: extra nodes are installed into `/app/data` and survive updates and restarts
 * Flows, credentials (encrypted with a per-install secret) and installed modules live in `/app/data` and are part of Cloudron backups
+* 10 generic raw TCP ports (`TCP_PORT_1`..`TCP_PORT_10`) that the admin can enable and freely number on demand, for flows that need to listen on TCP (MQTT, Modbus, custom protocols...); a flow node binds one via `${TCP_PORT_n}`
 
 ## Installation
 
